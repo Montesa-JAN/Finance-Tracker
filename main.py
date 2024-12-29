@@ -1,33 +1,35 @@
 import customtkinter as ctk
-from tableview_frame import TableView
-from calculate_frame import CalculateFrame
-from monthlysummary_frame import MonthlySummaryFrame
-
+from income import Income
+from expenses import Expenses
+from totalsavings import TotalSavings
 
 class MainApp(ctk.CTk):
     ctk.set_appearance_mode("dark")
-    WIDTH = 1000
-    HEIGHT = 900
     FONT = ("BEBAS", 20)
-    PADDING = 20
+    PADDING = 10
 
     def __init__(self):
         super().__init__()
-        self.resizable(width=False, height=False)
-
+        # Window Config
+        width = self.winfo_screenwidth()
+        height = self.winfo_screenheight()
+        self.geometry(f'{width}x{height}')
         self.title("Finance Tracker")
-        self.geometry(f"{MainApp.WIDTH}x{MainApp.HEIGHT}")
 
         # Frames
-        self.tableFrame = TableView(self, title="Table View")
-        self.tableFrame.grid(row=0, column=0, padx=self.PADDING, pady=self.PADDING, sticky="nw")
+        self.appFrame = ctk.CTkScrollableFrame(self, corner_radius=20)
+        self.appFrame.pack(padx=self.PADDING, pady=self.PADDING, fill='both', expand=True)
 
-        self.calculateFrame = CalculateFrame(self)
-        self.calculateFrame.grid(row=0, column=1, columnspan=2, padx=self.PADDING, pady=self.PADDING, sticky="ne")
+        self.incomeFrame = Income(self.appFrame, title="Income")
+        self.incomeFrame.grid(row=0, column=0, padx=self.PADDING, pady=self.PADDING, sticky="nw")
 
-        self.summaryFrame = MonthlySummaryFrame(self)
-        self.summaryFrame.grid(row=0, column=1, columnspan=2, padx=self.PADDING, pady=self.PADDING, sticky="ew")
+        self.expenseFrame = Expenses(self.appFrame, title="Expense")
+        self.expenseFrame.grid(row=0, column=1, padx=self.PADDING, pady=self.PADDING, sticky="ne")
 
+        self.savingsFrame = TotalSavings(self.appFrame, title="Total Savings")
+        self.savingsFrame.grid(row=1, column=0, columnspan=2, padx=self.PADDING, pady=self.PADDING, sticky="sew")
+
+    
 
 if __name__ == "__main__":
     app = MainApp()
